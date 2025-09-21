@@ -86,7 +86,7 @@ class GTMManager {
         this.isAuthenticated = false;
         this.tokenClient = null;
         this.authPromise = null;
-        this.allPagesTriggerCache = new Map();
+        this.initializationTriggerCache = new Map();
         this.measurementIdVariableCache = new Map();
         this.requestQueue = [];
         this.isProcessingQueue = false;
@@ -211,7 +211,7 @@ class GTMManager {
     element.innerHTML = `
         <div class="auth-success">
             <button class="btn-primary" onclick="loadGTMAccounts()">
-                Authenticated – Load GTM Accounts
+                Authenticated — Load GTM Accounts
             </button>
         </div>
     `;
@@ -351,11 +351,11 @@ class GTMManager {
         }
     }
 
-    async getOrCreateAllPagesTrigger(accountId, containerId, workspaceId) {
+    async getOrCreateInitializationTrigger(accountId, containerId, workspaceId) {
         const cacheKey = `${accountId}-${containerId}-${workspaceId}`;
         
-        if (this.allPagesTriggerCache.has(cacheKey)) {
-            return this.allPagesTriggerCache.get(cacheKey);
+        if (this.initializationTriggerCache.has(cacheKey)) {
+            return this.initializationTriggerCache.get(cacheKey);
         }
 
         try {
@@ -363,14 +363,14 @@ class GTMManager {
                 `https://tagmanager.googleapis.com/tagmanager/v2/accounts/${accountId}/containers/${containerId}/workspaces/${workspaceId}/triggers`
             );
 
-            const allPagesTrigger = (triggersData.trigger || []).find(trigger => 
-                trigger.type === 'pageview' && 
-                (trigger.name === 'All Pages' || trigger.name.toLowerCase().includes('all pages'))
+            const initializationTrigger = (triggersData.trigger || []).find(trigger => 
+                trigger.type === 'init' || 
+                (trigger.name === 'Initialization' || trigger.name.toLowerCase().includes('initialization'))
             );
 
-            if (allPagesTrigger) {
-                this.allPagesTriggerCache.set(cacheKey, allPagesTrigger.triggerId);
-                return allPagesTrigger.triggerId;
+            if (initializationTrigger) {
+                this.initializationTriggerCache.set(cacheKey, initializationTrigger.triggerId);
+                return initializationTrigger.triggerId;
             }
 
             const newTrigger = await this.rateLimitedApiCall(
@@ -378,19 +378,19 @@ class GTMManager {
                 {
                     method: 'POST',
                     body: JSON.stringify({
-                        name: 'All Pages',
-                        type: 'pageview',
+                        name: 'Initialization',
+                        type: 'init',
                         filter: []
                     })
                 }
             );
 
-            this.allPagesTriggerCache.set(cacheKey, newTrigger.triggerId);
+            this.initializationTriggerCache.set(cacheKey, newTrigger.triggerId);
             return newTrigger.triggerId;
 
         } catch (error) {
-            console.error('Error getting/creating All Pages trigger:', error);
-            throw new Error(`Failed to get All Pages trigger: ${error.message}`);
+            console.error('Error getting/creating Initialization trigger:', error);
+            throw new Error(`Failed to get Initialization trigger: ${error.message}`);
         }
     }
 
@@ -503,7 +503,7 @@ class GTMManager {
 
     async createGA4ConfigTag(accountId, containerId, workspaceId, measurementIdVariableId) {
         try {
-            const allPagesTrigger = await this.getOrCreateAllPagesTrigger(accountId, containerId, workspaceId);
+            const initializationTrigger = await this.getOrCreateInitializationTrigger(accountId, containerId, workspaceId);
 
             const configTagData = {
                 name: 'GA4 - Config',
@@ -520,7 +520,7 @@ class GTMManager {
                         value: '{{CONS - Measurement ID}}'
                     }
                 ],
-                firingTriggerId: [allPagesTrigger]
+                firingTriggerId: [initializationTrigger]
             };
 
             const configTag = await this.rateLimitedApiCall(
@@ -1276,7 +1276,7 @@ function showResults() {
                         <strong>Measurement ID Variable:</strong> ${appState.processedData.measurementIdVariable ? 'Created (CONS - Measurement ID)' : 'Failed'}
                     </div>
                     <div class="summary-item">
-                        <strong>GA4 Config Tag:</strong> ${appState.processedData.configTag ? 'Created' : 'Failed'}
+                        <strong>GA4 Config Tag:</strong> ${appState.processedData.configTag ? 'Created (using Initialization trigger)' : 'Failed'}
                     </div>
                     <div class="summary-item">
                         <strong>Variables Created:</strong> ${summary.variablesCreated}
@@ -1324,6 +1324,7 @@ function showResults() {
                             Successfully created ${summary.tagsCreated} GA4 event tags out of ${summary.totalEvents} events from your CSV.
                             ${summary.variablesCreated > 0 ? ` Also created ${summary.variablesCreated} data layer variables for event parameters.` : ''}
                             All tags now use the "CONS - Measurement ID" variable for consistent measurement ID references.
+                            The GA4 Config tag uses an Initialization trigger for optimal performance.
                         </p>
                     </div>
                 ` : ''}
@@ -1380,7 +1381,7 @@ function downloadProcessed() {
             metadata: {
                 generated: new Date().toISOString(),
                 version: '2.1',
-                tool: 'GTM CSV Upload Tool - Fixed Version with Measurement ID Variable'
+                tool: 'GTM CSV Upload Tool - Fixed Version with Measurement ID Variable and Initialization Trigger'
             },
             workspace: {
                 id: appState.processedData.workspace.workspaceId,
@@ -1424,6 +1425,7 @@ function downloadProcessed() {
                     id: appState.processedData.configTag.tagId,
                     name: appState.processedData.configTag.name,
                     type: appState.processedData.configTag.type,
+                    triggerType: 'initialization',
                     usesMeasurementIdVariable: true
                 } : null,
                 errors: appState.processedData.errors
