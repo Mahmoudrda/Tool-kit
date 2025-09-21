@@ -45,7 +45,6 @@ body {
 .nav-logo-icon {
     width: 32px;
     height: 32px;
-    /* Remove: background, color, border-radius, font properties */
     display: block;
 }
 
@@ -171,6 +170,13 @@ body {
     border-bottom: 2px solid rgba(66, 133, 244, 0.1);
 }
 
+.gtm-header .subtitle {
+    color: #666;
+    font-size: 18px;
+    margin-top: 15px;
+    line-height: 1.5;
+}
+
 .gtm-logo {
     font-size: 48px;
     margin-bottom: 15px;
@@ -189,7 +195,15 @@ body {
 
 /* Section Styles */
 .upload-section,
-.builder-section,
+.builder-section {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    margin: 20px 0;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
 .config-section {
     background: white;
     padding: 30px;
@@ -204,6 +218,13 @@ body {
     font-size: 28px;
     color: #333;
     margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.config-section h2 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 28px;
     font-weight: 600;
 }
 
@@ -224,6 +245,7 @@ body {
     transition: all 0.3s ease;
     background: #fafafa;
     margin: 30px 0;
+    position: relative;
 }
 
 .upload-area:hover,
@@ -238,12 +260,14 @@ body {
     font-size: 48px;
     margin-bottom: 20px;
     opacity: 0.7;
+    display: block;
 }
 
 .upload-text {
     font-size: 18px;
     color: #333;
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
 .upload-text strong {
@@ -308,6 +332,11 @@ body {
     line-height: 1.4;
 }
 
+.validation-feedback {
+    color: #dc3545 !important;
+    font-weight: 500;
+}
+
 /* Button Styles */
 .buttons {
     display: flex;
@@ -318,8 +347,7 @@ body {
 }
 
 .btn-primary,
-.btn-secondary,
-.btn-delete {
+.btn-secondary {
     padding: 15px 30px;
     border: none;
     border-radius: 10px;
@@ -332,6 +360,20 @@ body {
     align-items: center;
     justify-content: center;
     letter-spacing: 0.5px;
+    gap: 8px;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+    padding: 8px 12px;
+    font-size: 16px;
+    min-width: auto;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .btn-primary {
@@ -361,14 +403,6 @@ body {
     background: #e9ecef;
     border-color: #ccc;
     transform: translateY(-1px);
-}
-
-.btn-delete {
-    background: #dc3545;
-    color: white;
-    padding: 8px 12px;
-    font-size: 16px;
-    min-width: auto;
 }
 
 .btn-delete:hover {
@@ -668,8 +702,8 @@ body {
 /* Authentication Success */
 .auth-success {
     display: flex;
-    justify-content: center;   /* centers horizontally */
-    align-items: center;       /* centers vertically if container has height */
+    justify-content: center;
+    align-items: center;
     gap: 15px;
     color: #28a745;
     padding: 20px;
@@ -680,6 +714,10 @@ body {
     font-weight: 500;
 }
 
+.success-icon {
+    font-size: 24px;
+    opacity: 0.9;
+}
 
 /* Workspace Link */
 .workspace-link {
@@ -753,11 +791,75 @@ body {
     font-weight: 500;
 }
 
+.csv-requirements strong {
+    color: #6c5200;
+}
+
 /* Config Form */
 .config-form {
     display: grid;
     gap: 25px;
     margin: 30px 0;
+}
+
+/* Error Modal */
+.error-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.error-modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.error-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.error-modal-header h3 {
+    margin: 0;
+    color: #dc3545;
+}
+
+.error-modal-close {
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    font-weight: bold;
+}
+
+.error-modal-close:hover {
+    color: #666;
+}
+
+.error-modal-body {
+    padding: 20px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.error-modal-footer {
+    padding: 15px 20px;
+    text-align: right;
+    border-top: 1px solid #eee;
 }
 
 /* Responsive Design */
@@ -809,6 +911,10 @@ body {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
+    }
+
+    .config-section {
+        padding: 20px;
     }
 }
 
