@@ -58,7 +58,7 @@ const Utils = {
         const date = new Date();
         const dateStr = date.toISOString().split('T')[0];
         const timeStr = date.toTimeString().split(' ')[0].replace(/:/g, '');
-        return `CSV Import - ${dateStr} ${timeStr}`;
+        return `Merkle | GA4 Events Configurations - ${dateStr} ${timeStr}`;
     },
 
     validateMeasurementId(id) {
