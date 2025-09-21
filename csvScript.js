@@ -210,8 +210,6 @@ class GTMManager {
         Utils.safeUpdateElement('authSection', (element) => {
             element.innerHTML = `
                 <div class="auth-success">
-                    <span class="success-icon">✅</span>
-                    <span>Successfully authenticated with GTM API</span>
                     <button class="btn-primary" onclick="loadGTMAccounts()">Load GTM Accounts</button>
                 </div>
             `;
