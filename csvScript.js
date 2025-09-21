@@ -208,12 +208,14 @@ class GTMManager {
         appState.updateGTMConfig({ accessToken: response.access_token });
         
         Utils.safeUpdateElement('authSection', (element) => {
-            element.innerHTML = `
-                <div class="auth-success">
-                    <button class="btn-primary" onclick="loadGTMAccounts()">Load GTM Accounts</button>
-                </div>
-            `;
-        });
+    element.innerHTML = `
+        <div class="auth-success">
+            <button class="btn-primary" onclick="loadGTMAccounts()">
+                Authenticated – Load GTM Accounts
+            </button>
+        </div>
+    `;
+});
 
         if (this.authResolve) {
             this.authResolve();

@@ -668,7 +668,8 @@ body {
 /* Authentication Success */
 .auth-success {
     display: flex;
-    align-items: center;
+    justify-content: center;   /* centers horizontally */
+    align-items: center;       /* centers vertically if container has height */
     gap: 15px;
     color: #28a745;
     padding: 20px;
@@ -679,10 +680,6 @@ body {
     font-weight: 500;
 }
 
-.success-icon {
-    font-size: 24px;
-    opacity: 0.9;
-}
 
 /* Workspace Link */
 .workspace-link {
