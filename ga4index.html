@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MH3BXQ3P');</script>
+  <!-- End Google Tag Manager -->
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GA4 Custom Dimensions & Metrics Manager</title>
+
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="ga4Style.css">
+
+</head>
+<body>
+  
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MH3BXQ3P"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+   
+
+  <div class="container">
+    <div class="header">
+      <h1>GA4 Custom Dimensions & Metrics Manager</h1>
+      <p>Create and manage custom dimensions and metrics across multiple GA4 properties at the same time.</p>
+    </div>
+    
+    <div class="content">
+      <!-- Step 1: Property Selection -->
+      <div class="step">
+        <h3><span class="step-number">1</span>Select GA4 Properties (Max 3)</h3>
+        <div class="form-group">
+          <button onclick="loadProperties()" id="loadPropsBtn">Load My GA4 Properties</button>
+          <div id="propertyLoader" style="display: none;">
+            <div class="loading"></div> Loading properties...
+          </div>
+        </div>
+        <div class="form-group">
+          <select id="propertySelect" style="display: none;" onchange="onPropertyChange()" multiple>
+            <option value="">Select GA4 Properties...</option>
+          </select>
+          <small style="color: #666;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple properties. Maximum 3 properties allowed.</small>
+        </div>
+        <div id="selectedPropertiesDisplay" style="display: none;"></div>
+        <div id="existingDimensions" style="display: none;"></div>
+        <div id="existingMetrics" style="display: none;"></div>
+      </div>
+
+      <!-- Step 2: Choose Type -->
+      <div class="step">
+        <h3><span class="step-number">2</span>Choose Type</h3>
+        
+        <div class="main-tabs">
+          <button class="main-tab active" onclick="switchMainTab(event, 'dimensions')">Custom Dimensions</button>
+          <button class="main-tab" onclick="switchMainTab(event, 'metrics')">Custom Metrics</button>
+        </div>
+
+        <!-- DIMENSIONS TAB -->
+        <div id="dimensions-main-tab" class="main-tab-content active">
+          <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'manual')">Manual Entry</button>
+            <button class="tab" onclick="switchTab(event, 'csv')">Unified CSV Upload</button>
+          </div>
+
+          <!-- Manual Entry -->
+          <div id="manual-tab" class="tab-content active">
+            <div class="manual-form">
+              <div class="form-group">
+                <label>Display Name *</label>
+                <input type="text" id="manualDisplayName" placeholder="Content Type">
+              </div>
+              <div class="form-group">
+                <label>Parameter Name *</label>
+                <input type="text" id="manualParameterName" placeholder="content_type">
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <input type="text" id="manualDescription" placeholder="The type of content interacted with">
+              </div>
+              <div class="form-group">
+                <label>Scope</label>
+                <select id="manualScope">
+                  <option value="EVENT">Event</option>
+                  <option value="USER">User</option>
+                  <option value="ITEM">Item</option>
+                </select>
+              </div>
+            </div>
+            <button onclick="addManualDimension()" class="btn-small">Add Dimension</button>
+            <button onclick="generateSample()" class="btn-secondary btn-small">Add Sample Data</button>
+          </div>
+
+          <!-- CSV Upload -->
+          <div id="csv-tab" class="tab-content">
+            <div class="unified-csv-info">
+              <h4>📄 Unified CSV Format</h4>
+              <p>Upload one CSV file that can create both dimensions and metrics. Required columns:</p>
+              <ul>
+                <li><strong>Key</strong> - Parameter name (e.g., "user_type")</li>
+                <li><strong>Name</strong> - Display name (e.g., "User Type")</li>
+                <li><strong>Notes/Description</strong> - Description text</li>
+                <li><strong>GA4 Custom Dimension</strong> - TRUE to create as dimension</li>
+                <li><strong>GA4 Custom Metric</strong> - TRUE to create as metric</li>
+                <li><strong>Measurement Unit</strong> - Unit of measurement</li>
+              </ul>
+            </div>
+            <div class="file-drop" onclick="document.getElementById('csvFile').click()" ondrop="handleFileDrop(event)" ondragover="handleDragOver(event)">
+              <p><strong>Click to upload or drag & drop your unified CSV file</strong></p>
+              <p>The CSV can contain both dimensions and metrics in one file</p>
+            </div>
+            <input type="file" id="csvFile" accept=".csv" style="display: none;" onchange="handleFileSelect(event, 'csv')">
+            <button onclick="downloadTemplate('csv')" class="btn-secondary btn-small">Download Unified CSV Template</button>
+          </div>
+
+          <!-- Review Dimensions -->
+          <div class="step">
+            <h3><span class="step-number">3</span>Review Dimensions (<span id="dimensionCount">0</span>)</h3>
+            <div id="dimensionList" class="dimension-list">
+              <p>No dimensions added yet. Use the input methods above to add some.</p>
+            </div>
+            <div style="margin-top: 20px;">
+              <button onclick="validateAllDimensions()" class="btn-secondary btn-small">Validate All</button>
+              <button onclick="clearAllDimensions()" class="btn-secondary btn-small">Clear All</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- METRICS TAB -->
+        <div id="metrics-main-tab" class="main-tab-content">
+          <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'metric-manual')">Manual Entry</button>
+            <button class="tab" onclick="switchTab(event, 'metric-csv')">Unified CSV Upload</button>
+          </div>
+
+          <!-- Manual Entry -->
+          <div id="metric-manual-tab" class="tab-content active">
+            <div class="manual-form">
+              <div class="form-group">
+                <label>Display Name *</label>
+                <input type="text" id="metricManualDisplayName" placeholder="Revenue Per User">
+              </div>
+              <div class="form-group">
+                <label>Parameter Name *</label>
+                <input type="text" id="metricManualParameterName" placeholder="revenue_per_user">
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <input type="text" id="metricManualDescription" placeholder="Revenue generated per individual user">
+              </div>
+              <div class="form-group">
+                <label>Measurement Unit</label>
+                <select id="metricManualUnit">
+                  <option value="STANDARD">Standard</option>
+                  <option value="CURRENCY">Currency</option>
+                  <option value="FEET">Feet</option>
+                  <option value="METERS">Meters</option>
+                  <option value="KILOMETERS">Kilometers</option>
+                  <option value="MILES">Miles</option>
+                  <option value="MILLISECONDS">Milliseconds</option>
+                  <option value="SECONDS">Seconds</option>
+                  <option value="MINUTES">Minutes</option>
+                  <option value="HOURS">Hours</option>
+                </select>
+              </div>
+            </div>
+            <button onclick="addManualMetric()" class="btn-small">Add Metric</button>
+            <button onclick="generateSample()" class="btn-secondary btn-small">Add Sample Data</button>
+          </div>
+
+          <!-- CSV Upload -->
+          <div id="metric-csv-tab" class="tab-content">
+            <div class="unified-csv-info">
+              <h4>📄 Unified CSV Format</h4>
+              <p>Upload one CSV file that can create both dimensions and metrics. Required columns:</p>
+              <ul>
+                <li><strong>Key</strong> - Parameter name (e.g., "revenue_per_user")</li>
+                <li><strong>Name</strong> - Display name (e.g., "Revenue Per User")</li>
+                <li><strong>Notes/Description</strong> - Description text</li>
+                <li><strong>GA4 Custom Dimension</strong> - TRUE to create as dimension</li>
+                <li><strong>GA4 Custom Metric</strong> - TRUE to create as metric</li>
+                <li><strong>Measurement Unit</strong> - Unit of measurement</li>
+              </ul>
+            </div>
+            <div class="file-drop" onclick="document.getElementById('metricCsvFile').click()" ondrop="handleFileDrop(event)" ondragover="handleDragOver(event)">
+              <p><strong>Click to upload or drag & drop your unified CSV file</strong></p>
+              <p>The CSV can contain both dimensions and metrics in one file</p>
+            </div>
+            <input type="file" id="metricCsvFile" accept=".csv" style="display: none;" onchange="handleFileSelect(event, 'csv')">
+            <button onclick="downloadTemplate('csv')" class="btn-secondary btn-small">Download Unified CSV Template</button>
+          </div>
+
+          <!-- Review Metrics -->
+          <div class="step">
+            <h3><span class="step-number">3</span>Review Metrics (<span id="metricCount">0</span>)</h3>
+            <div id="metricList" class="metric-list">
+              <p>No metrics added yet. Use the input methods above to add some.</p>
+            </div>
+            <div style="margin-top: 20px;">
+              <button onclick="validateAllMetrics()" class="btn-secondary btn-small">Validate All</button>
+              <button onclick="clearAllMetrics()" class="btn-secondary btn-small">Clear All</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Options (Removed batch size and delay fields) -->
+      <div class="step">
+        <h3><span class="step-number">4</span>Options</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+          <div class="form-group">
+            <label><input type="checkbox" id="checkDuplicates" checked> Check for duplicates</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Shared Create Button -->
+      <div class="step">
+        <h3><span class="step-number">5</span>
+          <span id="createSectionTitle">Create Custom Dimensions</span>
+        </h3>
+        <button id="createBtn" onclick="createAllDimensions()" disabled>
+          Create Custom Dimensions
+        </button>
+        <div id="processLoader" style="display: none; margin-top: 15px;">
+          <div class="loading"></div>
+          <span id="processText">Creating custom dimensions...</span>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="results" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- Load Google APIs and custom script -->
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="https://accounts.google.com/gsi/client"></script>
+  <script src="ga4-manager.js"></script>
+
+  <script>
+  // Enhanced UI functions with logging
+  function switchMainTab(event, tabName) {
+    console.log('switchMainTab: Switching main tab to:', tabName);
+    document.querySelectorAll('.main-tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.main-tab-content').forEach(content => content.classList.remove('active'));
+
+    event.target.classList.add('active');
+    document.getElementById(tabName + '-main-tab').classList.add('active');
+
+    currentTab = tabName; // 'dimensions' or 'metrics'
+    console.log('switchMainTab: Current tab set to:', currentTab);
+    updateCreateButton();
+  }
+
+  function switchTab(event, tabName) {
+    console.log('switchTab: Switching sub-tab to:', tabName);
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tabName + '-tab').classList.add('active');
+  }
+
+  // Initialize logging
+  console.log('Enhanced GA4 Manager: Application loaded with comprehensive logging');
+  console.log('Enhanced GA4 Manager: Multi-property support enabled (max 3 properties)');
+  console.log('Enhanced GA4 Manager: Unified CSV format implemented');
+  </script>
+</body>
+</html>
