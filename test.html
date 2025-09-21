@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTM Tracking Configuration Wizard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="wizard-container">
+        <div class="gtm-header">
+            <div class="gtm-logo">GTM</div>
+            <div class="gtm-title">Tag Configuration Wizard</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-line">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle active" id="circle1">1</div>
+                    <div class="step-label active" id="label1">Goal</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle" id="circle2">2</div>
+                    <div class="step-label" id="label2">Platforms</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle" id="circle3">3</div>
+                    <div class="step-label" id="label3">Configure</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle" id="circle4">4</div>
+                    <div class="step-label" id="label4">Create</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle" id="circle5">5</div>
+                    <div class="step-label" id="label5">Deploy</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 1: Tracking Goal -->
+        <div class="step active" id="step1">
+            <h1>Select Tracking Goal</h1>
+            <p class="subtitle">Choose the type of tracking you want to implement with Google Tag Manager</p>
+            
+            <label for="trackingGoal">What would you like to track?</label>
+            <select id="trackingGoal">
+                <option value="">Choose your tracking objective...</option>
+                <option value="ecommerce">E-commerce Events Tracking</option>
+                <option value="leads">Lead Generation Tracking</option>
+                <option value="engagement">User Engagement Tracking</option>
+                <option value="conversions">Conversion Tracking</option>
+            </select>
+
+            <div class="buttons">
+                <div></div>
+                <button class="btn-primary" onclick="nextStep()" id="step1Next" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Select Destinations -->
+        <div class="step" id="step2">
+            <h1>Select Platforms</h1>
+            <p class="subtitle">Choose which advertising platforms you want to send your tracking data to</p>
+
+            <div class="destination-grid">
+                <div class="destination-card" data-destination="ga4">
+                    <input type="checkbox" id="ga4" value="ga4">
+                    <div class="destination-icon">📊</div>
+                    <div class="destination-name">Google Analytics 4</div>
+                    <div class="destination-desc">Enhanced ecommerce and conversion tracking</div>
+                </div>
+                <div class="destination-card" data-destination="meta">
+                    <input type="checkbox" id="meta" value="meta">
+                    <div class="destination-icon">📘</div>
+                    <div class="destination-name">Meta Pixel</div>
+                    <div class="destination-desc">Facebook & Instagram advertising pixel integration</div>
+                </div>
+                <div class="destination-card" data-destination="tiktok">
+                    <input type="checkbox" id="tiktok" value="tiktok">
+                    <div class="destination-icon">🎵</div>
+                    <div class="destination-name">TikTok Pixel</div>
+                    <div class="destination-desc">Track conversions and build audiences for TikTok Ads</div>
+                </div>
+                <div class="destination-card" data-destination="linkedin">
+                    <input type="checkbox" id="linkedin" value="linkedin">
+                    <div class="destination-icon">💼</div>
+                    <div class="destination-name">LinkedIn Insight</div>
+                    <div class="destination-desc">Professional audience tracking and B2B conversions</div>
+                </div>
+                <div class="destination-card" data-destination="snapchat">
+                    <input type="checkbox" id="snapchat" value="snapchat">
+                    <div class="destination-icon">👻</div>
+                    <div class="destination-name">Snapchat Pixel</div>
+                    <div class="destination-desc">Track conversions and build audiences for Snapchat Ads</div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn-primary" onclick="nextStep()" id="step2Next" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Configure IDs -->
+        <div class="step" id="step3">
+            <h1>Configure Tags</h1>
+            <p class="subtitle">Enter the required IDs and tokens for your selected platforms</p>
+
+            <div class="id-configs" id="idInputs">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+
+            <div class="buttons">
+                <button class="btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn-primary" onclick="nextStep()" id="step3Next" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Create Configuration -->
+        <div class="step" id="step4">
+            <h1>Create Configuration</h1>
+            <p class="subtitle">Review your settings and generate the GTM configuration</p>
+
+            <div id="configSummary">
+                <!-- Summary will be populated here -->
+            </div>
+
+            <div class="buttons">
+                <button class="btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn-primary" onclick="createConfiguration()" id="step4Next">Create Configuration</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Deploy -->
+        <div class="step" id="step5">
+            <div class="loading" id="loadingState">
+                <div class="spinner"></div>
+                <div class="loading-text">Generating your GTM configuration...</div>
+            </div>
+
+            <div class="error" id="errorMessage" style="display: none;"></div>
+
+            <div id="successContent" style="display: none;">
+                <div class="success-badge">Configuration Created Successfully</div>
+                <h1>Deploy Your Tags</h1>
+                <p class="subtitle">Your tracking configuration is ready. Preview and deploy it.</p>
+
+                <div class="preview-container">
+                    <h3 style="margin-bottom: 16px; color: #202124;">Configuration Preview</h3>
+                    <div class="preview-content" id="configPreview"></div>
+                </div>
+
+                <div class="final-actions">
+                    <div class="action-card" onclick="downloadJSON()">
+                        <div class="action-icon">📄</div>
+                        <div class="action-title">Download JSON</div>
+                        <div class="action-desc">Export configuration file for manual GTM import</div>
+                    </div>
+                    <div class="action-card" onclick="integrateWithGTM()">
+                        <div class="action-icon">🚀</div>
+                        <div class="action-title">Integrate with GTM</div>
+                        <div class="action-desc">Directly integrate with Google Tag Manager</div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn-secondary" onclick="resetWizard()">Start New Configuration</button>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
