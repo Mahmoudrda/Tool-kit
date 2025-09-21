@@ -1299,9 +1299,13 @@ function showResults() {
                            target="_blank" class="btn-link">
                             Open in GTM → ${appState.processedData.workspace.name}
                         </a>
-                        <small style="display: block; margin-top: 10px; color: #666;">
-                            Remember to preview and publish your changes in GTM after reviewing them.
-                        </small>
+                        <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 5px;">
+                            <strong style="color: #856404; display: block; margin-bottom: 5px;">Important:</strong>
+                            <p style="margin: 0; color: #856404; font-weight: bold;">
+                                These changes are created in a new workspace that is not yet published.<br>
+                                Make sure to thoroughly review and test all configurations before publishing.
+                            </p>
+        </div>
                     </div>
                 ` : ''}
                 
@@ -1314,18 +1318,6 @@ function showResults() {
                         <small style="color: #666; font-style: italic;">
                             These errors didn't prevent the creation of other elements. You can manually fix these issues in GTM.
                         </small>
-                    </div>
-                ` : ''}
-                
-                ${summary.tagsCreated > 0 ? `
-                    <div style="background: #d4edda; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #c3e6cb;">
-                        <h4 style="color: #155724; margin: 0 0 15px 0;">Configuration Complete!</h4>
-                        <p style="color: #155724; margin: 0;">
-                            Successfully created ${summary.tagsCreated} GA4 event tags out of ${summary.totalEvents} events from your CSV.
-                            ${summary.variablesCreated > 0 ? ` Also created ${summary.variablesCreated} data layer variables for event parameters.` : ''}
-                            All tags now use the "CONS - Measurement ID" variable for consistent measurement ID references.
-                            The GA4 Config tag uses an Initialization trigger for optimal performance.
-                        </p>
                     </div>
                 ` : ''}
             </div>
