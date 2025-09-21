@@ -114,6 +114,31 @@
         </div>
     </div>
 
+    <!-- Welcome Popup -->
+    <div class="popup-overlay" id="welcomePopup">
+        <div class="welcome-popup">
+            <button class="close-btn" onclick="closeWelcomePopup()">&times;</button>
+            <div class="popup-icon">
+                <img src="logos/google-tag-manager-svgrepo-com.svg" alt="GTM Logo">
+            </div>
+            <h2>Welcome to GTM Tag Builder!</h2>            
+            <div class="popup-features">
+                <h4>✨ How It Works:</h4>
+                <ul>
+                    <li>Download the "General Events" tab from the solution design document as a CSV file</li>
+                    <li>Upload the CSV file to the GTM Tag Builder</li>
+                    <li>Authenticate with your Google Account</li>
+                    <li>Select the GTM account and container and enter the measurement ID</li>
+                    <li>Review the summary of created tags, triggers, and variables parsed from the CSV</li>
+                    <li>Click the "Create GTM Configuration" button</li>
+                    <li>Validate the created tags, triggers, and variables</li>
+                </ul>
+            </div>
+            
+            <button class="popup-btn" onclick="closeWelcomePopup()">Get Started</button>
+        </div>
+    </div>
+
     <!-- Error Modal for Better Error Display -->
     <div id="errorModal" class="error-modal" style="display: none;">
         <div class="error-modal-content">
@@ -137,8 +162,45 @@
     <!-- Load our enhanced script -->
     <script src="csvScript.js"></script>
 
-
     <script>
+        // Welcome popup functionality
+        function showWelcomePopup() {
+            const popup = document.getElementById('welcomePopup');
+            popup.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWelcomePopup() {
+            const popup = document.getElementById('welcomePopup');
+            popup.classList.remove('show');
+            document.body.style.overflow = '';
+            
+            sessionStorage.setItem('welcomePopupShown', 'true');
+        }
+
+        window.addEventListener('load', function() {
+            if (!sessionStorage.getItem('welcomePopupShown')) {
+                setTimeout(() => {
+                    showWelcomePopup();
+                }, 1000); 
+            }
+        });
+
+        document.getElementById('welcomePopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeWelcomePopup();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const popup = document.getElementById('welcomePopup');
+                if (popup.classList.contains('show')) {
+                    closeWelcomePopup();
+                }
+            }
+        });
+
         // Enhanced error modal functions
         function showErrorModal(message) {
             document.getElementById('errorModalMessage').innerHTML = message;
