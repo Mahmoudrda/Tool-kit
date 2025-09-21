@@ -58,7 +58,7 @@ const Utils = {
         const date = new Date();
         const dateStr = date.toISOString().split('T')[0];
         const timeStr = date.toTimeString().split(' ')[0].replace(/:/g, '');
-        return `Merkle | GA4 Events Configurations - ${dateStr} ${timeStr}`;
+        return `Merkle | GA4 Events Configurations - ${dateStr}`;
     },
 
     validateMeasurementId(id) {
@@ -821,13 +821,13 @@ class FileUploadManager {
                 <div class="csv-preview">
                     <h3>Parsed Events (${appState.csvData.length})</h3>
                     <div class="preview-list">
-                        ${appState.csvData.slice(0, 10).map(item => `
+                        ${appState.csvData.slice(0, 30).map(item => `
                             <div class="preview-item">
                                 <strong>${item.eventName}</strong>
                                 <div class="parameters">Parameters: ${item.parameters.length > 0 ? item.parameters.join(', ') : 'None'}</div>
                             </div>
                         `).join('')}
-                        ${appState.csvData.length > 10 ? `<div class="preview-item"><em>... and ${appState.csvData.length - 10} more events</em></div>` : ''}
+                        ${appState.csvData.length > 30 ? `<div class="preview-item"><em>... and ${appState.csvData.length - 30} more events</em></div>` : ''}
                     </div>
                 </div>
             </div>
@@ -1276,7 +1276,7 @@ function showResults() {
                         <strong>Measurement ID Variable:</strong> ${appState.processedData.measurementIdVariable ? 'Created (CONS - Measurement ID)' : 'Failed'}
                     </div>
                     <div class="summary-item">
-                        <strong>GA4 Config Tag:</strong> ${appState.processedData.configTag ? 'Created (using Initialization trigger)' : 'Failed'}
+                        <strong>GA4 Config Tag:</strong> ${appState.processedData.configTag ? 'Created ' : 'Failed'}
                     </div>
                     <div class="summary-item">
                         <strong>Variables Created:</strong> ${summary.variablesCreated}
