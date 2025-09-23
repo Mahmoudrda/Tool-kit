@@ -1,4 +1,37 @@
-// Global state
+
+// Auto-highlight current page in navigation
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    const currentFile = currentPath.split('/').pop() || 'index.html';
+    
+    // Remove any existing active classes
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Map files to their corresponding nav items
+    const pageMapping = {
+        'template-index.html': 'Tag Templates',
+        'index.html': 'CSV Upload',
+        'ga4index.html': 'Custom Dimensions'
+    };
+    
+    // Find and activate the current page
+    if (pageMapping[currentFile]) {
+        const targetText = pageMapping[currentFile];
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            if (item.textContent.trim() === targetText) {
+                item.classList.add('active');
+                // Also highlight the parent dropdown
+                const parentDropdown = item.closest('.nav-dropdown');
+                if (parentDropdown) {
+                    const toggle = parentDropdown.querySelector('.dropdown-toggle');
+                    toggle.classList.add('active-group');
+                }
+            }
+        });
+    }
+});// Global state
 let currentStep = 1;
 let formData = {
     trackingTemplate: '',

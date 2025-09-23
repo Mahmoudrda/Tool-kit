@@ -14,7 +14,7 @@ body {
     color: #333;
 }
 
-/* Navigation Bar */
+/* Navigation Styles */
 .top-nav {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -47,6 +47,7 @@ body {
     display: block;
 }
 
+/* Optional hover effect */
 .nav-logo-icon:hover {
     transform: scale(1.05);
     transition: transform 0.2s ease;
@@ -64,13 +65,11 @@ body {
     gap: 30px;
 }
 
-/* Navigation Dropdown */
 .nav-dropdown {
     position: relative;
 }
 
-.nav-link,
-.dropdown-toggle {
+.nav-link {
     text-decoration: none;
     color: #666;
     font-weight: 500;
@@ -80,30 +79,12 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    border: 2px solid transparent;
-    cursor: pointer;
 }
 
 .nav-link:hover,
-.dropdown-toggle:hover,
-.nav-link.active-group,
-.dropdown-toggle.active-group {
+.nav-link.active-group {
     color: #4285f4;
     background: rgba(66, 133, 244, 0.1);
-    border-color: rgba(66, 133, 244, 0.2);
-}
-
-.nav-link.active,
-.dropdown-toggle.active-group {
-    background: #4285f4;
-    color: white;
-    border-color: #4285f4;
-}
-
-.nav-link.active:hover,
-.dropdown-toggle.active-group:hover {
-    background: #3367d6;
-    border-color: #3367d6;
 }
 
 .dropdown-arrow {
@@ -144,9 +125,6 @@ body {
     color: #666;
     transition: all 0.3s ease;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 8px;
-    margin: 4px;
-    font-weight: 500;
 }
 
 .dropdown-item:last-child {
@@ -156,7 +134,15 @@ body {
 .dropdown-item:hover,
 .dropdown-item.active {
     color: #4285f4;
-    background: rgba(66, 133, 244, 0.1);
+    background: rgba(66, 133, 244, 0.05);
+}
+
+.dropdown-item:first-child {
+    border-radius: 12px 12px 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 12px 12px;
 }
 
 /* Main Content Container */
