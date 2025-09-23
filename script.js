@@ -19,27 +19,27 @@ const eventTemplates = {
 const platformRequirements = {
     ga4: {
         name: 'Google Analytics 4',
-        icon: '📊',
+        imagePath: "logos/google-analytics-svgrepo-com.svg",
         fields: [{ name: 'Measurement ID', placeholder: 'G-XXXXXXXXXX' }]
     },
     meta: {
         name: 'Meta Pixel',
-        icon: '📘',
+        imagePath: "logos/Meta_Platforms_Inc._logo_(cropped).svg",
         fields: [{ name: 'Pixel ID', placeholder: 'Facebook Pixel ID' }]
     },
     tiktok: {
         name: 'TikTok Pixel',
-        icon: '🎵',
+        imagePath: "logos/tiktok-svgrepo-com.svg",
         fields: [{ name: 'Pixel ID', placeholder: 'TikTok Pixel ID' }]
     },
     linkedin: {
         name: 'LinkedIn Insight Tag',
-        icon: '💼',
+        imagePath: "logos/linkedin-1-svgrepo-com.svg",
         fields: [{ name: 'Partner ID', placeholder: 'LinkedIn Partner ID' }]
     },
     snapchat: {
         name: 'Snapchat Pixel',
-        icon: '👻',
+        imagePath: "logos/snapchat-svgrepo-com.svg",
         fields: [{ name: 'Pixel ID', placeholder: 'Snapchat Pixel ID' }]
     }
 };
@@ -109,9 +109,11 @@ function generateIdInputs() {
 
         let inputsHTML = `
             <div class="config-header">
-                <div class="config-icon" style="background: ${getIconBackground(dest)}">${config.icon}</div>
-                <div class="config-title">${config.name}</div>
-            </div>
+        <div class="config-icon">
+            <img src="${config.imagePath}" alt="${config.name}" style="width: 40px; height: 40px; object-fit: contain;">
+        </div>
+        <div class="config-title">${config.name}</div>
+    </div>
         `;
 
         config.fields.forEach(field => {

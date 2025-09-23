@@ -52,7 +52,31 @@
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MH3BXQ3P"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-   
+    <!-- Welcome Popup -->
+    <div class="popup-overlay show" id="welcomePopup">
+        <div class="welcome-popup">
+            <button class="ga4-popup-close-btn" onclick="closeWelcomePopup()">&times;</button>
+            <div class="popup-icon">
+                <img src="logos/google-analytics-svgrepo-com.svg" alt="GA4 Logo">
+            </div>
+            <h2>Welcome to GA4 Custom Definitions Builder!</h2>            
+            <div class="popup-features">
+                <h4>✨ How It Works:</h4>
+                <ul>
+                    <li>Download the "Data Dictionary" tab from the solution design document as a CSV file</li>
+                    <li>Authenticate with your Google Account</li>
+                    <li>Select the GA4 Account and Property (up to 3 properties at a time)</li>
+                    <li>Review the existing dimensions and metrics in the properties</li>
+                    <li>Upload the CSV file to the GA4 Custom Definitions Builder</li>
+                    <li>Review the parsed dimensions and metrics from the uploaded CSV</li>
+                    <li>Click the "Create Custom Definitions" button</li>
+                    <li>Validate the created dimensions and metrics</li>
+                </ul>
+            </div>
+            
+            <button class="popup-btn" onclick="closeWelcomePopup()">Get Started</button>
+        </div>
+    </div>
 
   <div class="container">
     <div class="header">
@@ -300,5 +324,72 @@
   console.log('Enhanced GA4 Manager: Multi-property support enabled (max 3 properties)');
   console.log('Enhanced GA4 Manager: Unified CSV format implemented');
   </script>
+  <script>
+        // Welcome popup functionality
+        function showWelcomePopup() {
+            const popup = document.getElementById('welcomePopup');
+            popup.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWelcomePopup() {
+            const popup = document.getElementById('welcomePopup');
+            popup.classList.remove('show');
+            document.body.style.overflow = '';
+            
+            sessionStorage.setItem('ga4welcomePopupShown', 'true');
+        }
+
+        window.addEventListener('load', function() {
+            if (!sessionStorage.getItem('ga4welcomePopupShown')) {
+                setTimeout(() => {
+                    showWelcomePopup();
+                }, 1000); 
+            }
+        });
+
+        document.getElementById('welcomePopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeWelcomePopup();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const popup = document.getElementById('welcomePopup');
+                if (popup.classList.contains('show')) {
+                    closeWelcomePopup();
+                }
+            }
+        });
+
+        // Enhanced error modal functions
+        function showErrorModal(message) {
+            document.getElementById('errorModalMessage').innerHTML = message;
+            document.getElementById('errorModal').style.display = 'flex';
+        }
+
+        function closeErrorModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        // Override default alert to use modal for better UX
+        const originalAlert = window.alert;
+        window.alert = function(message) {
+            if (message && message.length > 100) {
+                showErrorModal(message.replace(/\n/g, '<br>'));
+            } else {
+                originalAlert(message);
+            }
+        };
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('errorModal');
+            if (event.target === modal) {
+                closeErrorModal();
+            }
+        }
+    </script>
 </body>
 </html>

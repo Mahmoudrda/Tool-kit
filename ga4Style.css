@@ -206,8 +206,192 @@ body {
 .dropdown-item:last-child {
     border-radius: 0 0 12px 12px;
 }
+/* Popup Overlay */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
 
+        .popup-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
 
+        /* Popup Container */
+        .welcome-popup {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2.5rem 2.5rem;
+            max-width: 520px;
+            width: 90%;
+            text-align: center;
+            color: #333;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        .popup-overlay.show .welcome-popup {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Close Button - Enhanced with higher specificity */
+        .ga4-popup-close-btn {
+            position: absolute !important;
+            top: 20px !important;
+            right: 25px !important;
+            background: #ff6f00 !important; /* Orange background */
+            border: none !important;
+            font-size: 16px !important;
+            color: white !important; /* White text for contrast */
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+            width: 28px !important; /* Slightly larger for better appearance */
+            height: 28px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+            min-height: auto !important; /* Override global button min-height */
+            box-shadow: 0 2px 8px rgba(255, 111, 0, 0.3) !important; /* Orange shadow */
+            letter-spacing: normal !important; /* Reset letter spacing */
+            font-family: Arial, sans-serif !important; /* Force standard font */
+            text-indent: 0 !important; /* Reset any text indent */
+            transform: none !important; /* Reset transforms */
+            border-radius: 50% !important; /* Make it circular */
+        }
+
+        .ga4-popup-close-btn:hover {
+            color: white !important;
+            transform: scale(1.1) !important; /* Slight hover scale */
+            box-shadow: 0 4px 12px rgba(255, 111, 0, 0.4) !important; /* Enhanced shadow on hover */
+            background: #e65100 !important; /* Darker orange on hover */
+        }
+
+        .ga4-popup-close-btn:active {
+            transform: none !important; /* Prevent active transform */
+        }
+
+        .ga4-popup-close-btn:focus {
+            outline: 1px dotted #666 !important; /* Simple focus indicator */
+            box-shadow: none !important; /* Remove focus shadow */
+        }
+
+        /* Clear any pseudo-elements that might be adding icons */
+        .ga4-popup-close-btn::before,
+        .ga4-popup-close-btn::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        /* Icon */
+        .popup-icon {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .popup-icon img {
+            width: 42px;
+            height: 42px;
+            /* Remove the filter to show original colors */
+        }
+
+        /* Title */
+        .welcome-popup h2 {
+            font-size: 2.2rem;
+            margin-bottom: 2.5rem;
+            color: #2c2c2c;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        /* Features Section */
+        .popup-features {
+            text-align: left;
+            margin-bottom: 2.5rem;
+        }
+
+        .popup-features h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            color: #2c2c2c;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .popup-features ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .popup-features li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .popup-features li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #ff6f00;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Get Started Button */
+        .popup-btn {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%);
+            color: white;
+            min-width: 160px;
+            box-shadow: 0 4px 16px rgba(255, 111, 0, 0.25);
+            letter-spacing: 0.01em;
+        }
+
+        .popup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(255, 111, 0, 0.35);
+            background: linear-gradient(135deg, #e65100 0%, #ff6f00 100%);
+        }
+
+        .popup-btn:active {
+            transform: translateY(0);
+        }
 /* Container and Layout */
 .container {
   max-width: 1200px;
