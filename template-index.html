@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MH3BXQ3P');</script>
+<!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTM Tracking Configuration Wizard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .destination-icon img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+        
+        /* Popup Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 15px;
+        }
+        
+        .modal-message {
+            font-size: 16px;
+            color: #5f6368;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+        
+        .modal-button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .modal-button:hover {
+            background: #1557b0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MH3BXQ3P"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src = "logos/google-tag-manager-svgrepo-com.svg" alt="GTM Logo" class="nav-logo-icon">
+                <span class="nav-logo-text">GTM Templates</span>
+            </div>
+            <div class="nav-links">
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle active-group">
+                        GTM Configuration
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="index.html" class="dropdown-item active">Tag Templates</a>
+                        <a href="csvUpload.html" class="dropdown-item">CSV Upload</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        GA4 Tools
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="ga4index.html" class="dropdown-item">Custom Dimensions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="wizard-container">
+            <div class="gtm-header">
+                <img src="logos/google-tag-manager-svgrepo-com.svg" alt="GTM Logo" class="nav-logo-icon" style="width: 40px; height: 40px; margin-right: 12px;">
+                <div class="gtm-title">Template Builder</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-steps">
+                    <div class="progress-line">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-circle active" id="circle1">1</div>
+                        <div class="step-label active" id="label1">Template</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-circle" id="circle2">2</div>
+                        <div class="step-label" id="label2">Platforms</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-circle" id="circle3">3</div>
+                        <div class="step-label" id="label3">Configure</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-circle" id="circle4">4</div>
+                        <div class="step-label" id="label4">Create</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-circle" id="circle5">5</div>
+                        <div class="step-label" id="label5">Deploy</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1: Tracking Template -->
+            <div class="step active" id="step1">
+                <h1>Select Tracking Template</h1>
+                <p class="subtitle">Choose the type of tracking template you want to implement with Google Tag Manager</p>
+                
+                <label for="trackingTemplate">What would you like to track?</label>
+                <select id="trackingTemplate">
+                    <option value="">Choose your tracking template...</option>
+                    <option value="ecommerce">E-commerce Events Template</option>
+                    <option value="leads">Lead Tracking Template</option>
+                </select>
+
+                <div class="buttons">
+                    <div></div>
+                    <button class="btn-primary" onclick="nextStep()" id="step1Next" disabled>Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Select Destinations -->
+            <div class="step" id="step2">
+                <h1>Select Platforms</h1>
+                <p class="subtitle">Choose which advertising platforms you want to send your tracking data to</p>
+
+                <div class="destination-grid">
+                    <div class="destination-card" data-destination="ga4">
+                        <input type="checkbox" id="ga4" value="ga4">
+                        <div class="destination-icon">
+                            <img src="logos/google-analytics-svgrepo-com.svg" alt="Google Analytics 4">
+                        </div>
+                        <div class="destination-name">Google Analytics 4</div>
+                        <div class="destination-desc">Enhanced ecommerce and conversion tracking</div>
+                    </div>
+                    <div class="destination-card" data-destination="meta">
+                        <input type="checkbox" id="meta" value="meta">
+                        <div class="destination-icon">
+                            <img src="logos/Meta_Platforms_Inc._logo_(cropped).svg" alt="Meta Pixel">
+                        </div>
+                        <div class="destination-name">Meta Pixel</div>
+                        <div class="destination-desc">Facebook & Instagram advertising pixel integration</div>
+                    </div>
+                    <div class="destination-card" data-destination="tiktok">
+                        <input type="checkbox" id="tiktok" value="tiktok">
+                        <div class="destination-icon">
+                            <img src="logos/tiktok-svgrepo-com.svg" alt="TikTok Pixel">
+                        </div>
+                        <div class="destination-name">TikTok Pixel</div>
+                        <div class="destination-desc">Track conversions and build audiences for TikTok Ads</div>
+                    </div>
+                    <div class="destination-card" data-destination="linkedin">
+                        <input type="checkbox" id="linkedin" value="linkedin">
+                        <div class="destination-icon">
+                            <img src="logos/linkedin-1-svgrepo-com.svg" alt="LinkedIn Insight">
+                        </div>
+                        <div class="destination-name">LinkedIn Insight</div>
+                        <div class="destination-desc">Professional audience tracking and B2B conversions</div>
+                    </div>
+                    <div class="destination-card" data-destination="snapchat">
+                        <input type="checkbox" id="snapchat" value="snapchat">
+                        <div class="destination-icon">
+                            <img src="logos/snapchat-svgrepo-com.svg" alt="Snapchat Pixel">
+                        </div>
+                        <div class="destination-name">Snapchat Pixel</div>
+                        <div class="destination-desc">Track conversions and build audiences for Snapchat Ads</div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn-primary" onclick="nextStep()" id="step2Next" disabled>Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Configure IDs -->
+            <div class="step" id="step3">
+                <h1>Configure Tags</h1>
+                <p class="subtitle">Enter the required IDs and tokens for your selected platforms</p>
+
+                <div class="id-configs" id="idInputs">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+
+                <div class="buttons">
+                    <button class="btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn-primary" onclick="nextStep()" id="step3Next" disabled>Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Create Configuration -->
+            <div class="step" id="step4">
+                <h1>Create Configuration</h1>
+                <p class="subtitle">Review your settings and generate the GTM configuration</p>
+
+                <div id="configSummary">
+                    <!-- Summary will be populated here -->
+                </div>
+
+                <div class="buttons">
+                    <button class="btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn-primary" onclick="createConfiguration()" id="step4Next">Create Configuration</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Deploy -->
+            <div class="step" id="step5">
+                <div class="loading" id="loadingState">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Generating your GTM configuration...</div>
+                </div>
+
+                <div class="error" id="errorMessage" style="display: none;"></div>
+
+                <div id="successContent" style="display: none;">
+                    <div class="success-badge">Configuration Created Successfully</div>
+                    <h1>Deploy Your Tags</h1>
+                    <p class="subtitle">Your tracking configuration is ready. Preview and deploy it.</p>
+
+                    <div class="preview-container">
+                        <h3 style="margin-bottom: 16px; color: #202124;">Configuration Preview</h3>
+                        <div class="preview-content" id="configPreview"></div>
+                    </div>
+
+                    <div class="final-actions">
+                        <div class="action-card" onclick="downloadJSON()">
+                            <div class="action-icon">📄</div>
+                            <div class="action-title">Download JSON</div>
+                            <div class="action-desc">Export configuration file for manual GTM import</div>
+                        </div>
+                        <div class="action-card" onclick="integrateWithGTM()">
+                            <div class="action-icon">🚀</div>
+                            <div class="action-title">Integrate with GTM</div>
+                            <div class="action-desc">Directly integrate with Google Tag Manager</div>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <button class="btn-secondary" onclick="resetWizard()">Start New Configuration</button>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Development Notice Modal -->
+    <div class="modal-overlay" id="devModal">
+        <div class="modal-content">
+            <div class="modal-icon">🚧</div>
+            <div class="modal-title">Coming Soon!</div>
+            <div class="modal-message">This feature isn't live yet. It's coming soon</div>
+            <button class="modal-button" onclick="closeModal()">Got it</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Show modal when page loads
+        window.addEventListener('load', function() {
+            document.getElementById('devModal').style.display = 'flex';
+        });
+        
+        // Close modal function
+        function closeModal() {
+            document.getElementById('devModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        document.getElementById('devModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
