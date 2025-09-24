@@ -53,7 +53,7 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
     <!-- Welcome Popup -->
-    <div class="popup-overlay show" id="welcomePopup">
+    <div class="popup-overlay show" id="ga4welcomePopup">
         <div class="welcome-popup">
             <button class="ga4-popup-close-btn" onclick="closeWelcomePopup()">&times;</button>
             <div class="popup-icon">
@@ -327,13 +327,13 @@
   <script>
         // Welcome popup functionality
         function showWelcomePopup() {
-            const popup = document.getElementById('welcomePopup');
+            const popup = document.getElementById('ga4welcomePopup');
             popup.classList.add('show');
             document.body.style.overflow = 'hidden';
         }
 
         function closeWelcomePopup() {
-            const popup = document.getElementById('welcomePopup');
+            const popup = document.getElementById('ga4welcomePopup');
             popup.classList.remove('show');
             document.body.style.overflow = '';
             

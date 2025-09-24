@@ -1060,6 +1060,7 @@ function toggleCreateButton() {
 }
 
 async function processGTMConfiguration() {
+    dataLayer.push({ event: 'gtm_configuration_start' });
     const { accountId, containerId, measurementId } = appState.gtmConfig;
     
     if (!accountId || !containerId || !measurementId || !appState.gtmManager.isAuthenticated) {
